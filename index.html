@@ -1,0 +1,116 @@
+<!DOCTYpE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <style>
+    .heading {
+        text-align: center;
+        width: 100%;
+        margin: auto;
+    }
+
+    .search-block {
+        width: 66.667%;
+        margin: auto;
+    }
+
+    .search-block input[type="text"] {
+        outline: none;
+        width: 66.666%;
+        border: none;
+        font-size: 25px;
+        line-height: 50px;
+        text-indent: 5px;
+        border-radius: 10px;
+        margin: auto;
+        display: block;
+        box-shadow: inset 0px 0px 5px -1px;
+    }
+
+    .search-block input[placeholder] {
+        font-size: 18px;
+    }
+
+    .cars {
+        margin: 35px auto;
+        padding: 0;
+        text-align: center;
+        width: 66.666%;
+        list-style: none;
+        line-height: 1.5;
+    }
+
+    .cars > li {
+        border-bottom: 1px solid #ddd;
+        display: none;
+    }
+
+    .radio {
+        text-align: center;
+    }
+
+    #checkCar:checked+label {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #checkCity:checked+label {
+        border-bottom: 1px solid #ddd;
+    }
+    .carCity {
+        color: #484848;
+        border-left: 1px solid #ddd;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="heading">
+        <h1>CAR SEARCH</h1>
+        <p>Best car searching service ever!</p>
+    </div>
+    <div class="search-block">
+        <input type="text" id="search" placeholder="Type your wish">
+        <div class="radio">
+            <input type="checkbox" id="checkCar" >
+            <label for="checkCar">Search by car manufacturer</label>
+            <input type="checkbox" id="checkCity" >
+            <label for="checkCity">Search car by city</label>
+        </div>
+        <ul class="cars" id="searchField">
+            <li data-cities="paris, warsaw, munchen, shtuttgart">audi</li>
+            <li data-cities="paris, berlin, munchen, london">Chevrolet</li>
+            <li data-cities="warsaw, poznan, munchen, kiev"> Ford</li>
+            <li data-cities="london, helsinki, paris, rome">Mazda</li>
+            <li data-cities="amsterdam, munchen, warsaw">Opel</li>
+            <li data-cities="warsaw, riga, tallin, lissabon">Toyota</li>
+            <li data-cities="madrid, berlin, prague, rome">Volkswagen</li>
+            <li data-cities="krakow, vilnus, amsterdam, shtuttgart">ВАЗ</li>
+            <li data-cities="paris, tallin, riga, lissabon">ЗАЗ</li>
+        </ul>
+    </div>
+    <script>
+    $('#search').on('keyup', function() {
+        var key = $(this).val();
+        var re = new RegExp(key, 'gi');
+        if ($('#checkCity').is(':checked')) {
+            $('.carCity').remove();
+            $('#searchField > li').each(function() {
+                $(this).toggle($(this).attr('data-cities').search(key.toLowerCase()) !== -1);
+            });
+        }
+        if ($('#checkCar').is(':checked')) {
+            $('#searchField > li').each(function() {
+                $(this).toggle($(this).text().toLowerCase().search(key.toLowerCase()) !== -1);
+                if ( !($(this).children().hasClass('carCity')) ) {
+                    $(this).append('<li class="carCity">' + $(this).data('cities') + '</li>');
+                }
+            });
+        }
+    });
+    </script>
+</body>
+
+</html>
